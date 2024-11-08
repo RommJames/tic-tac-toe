@@ -6,32 +6,82 @@ const gameboard = (function(){
     ]
 })();
 
-// Check Winner
-function checkWinner(){
-    let startingIndex = 0;  
-    let checkSymbols = 0;    
+// Player
+function player(){
+    let score = 0;
 
+    const addScore = ()=> score++;
+    const getScore = ()=> score;
+
+    return {addScore, getScore}
+}
+
+const playerX = player();
+const playerO = player();
+
+function scoreBoard(){
+    const playerXScore = playerX.getScore();
+    const playerOScore = playerO.getScore();
+
+    return `
+            PlayerX: ${playerXScore} - PlayerO: ${playerOScore}
+            `
+}
+
+// Check Winner
+const diagonalLeftToRight = checkValues(0);
+
+function checkWinner(){
+    
+    checkDirectionWinner(diagonalLeftToRight);
+
+}
+
+// check and get values of starting index
+function checkValues(startIndex){
+    let startingIndex = startIndex;
+
+    const addStartingIndex = () => startingIndex++;
+    const subStartingIndex = () => startingIndex--;
+    const getStartingIndex = () => startingIndex = startingIndex >= 3 || startingIndex <= 0 ? startIndex : startingIndex;
+
+    return {addStartingIndex, subStartingIndex, getStartingIndex}
+}
+
+// check symbols if gets 3 symbols in a row
+function checkDirectionWinner(direction){    
+    const checkSymbolX = [];
+    const checkSymbolO = [];
     for(let row = 0; row < gameboard.length; row++){
         const getRow = gameboard[row];
-        let getPos = getRow[startingIndex];
-
-        // get left to right diagonal 
-        // checkDirectionWinner(getRow, startingIndex++);
+        let getPos = getRow[direction.getStartingIndex()];        
         
         if(getPos == "X"){
-            checkSymbols++;
-            console.log(getPos);
+            checkSymbolX.push(getPos);
         }
 
-        if(checkSymbols >= 3){
-            alert("Winner: " + getPos)
+        if(getPos == "O"){
+            checkSymbolO.push(getPos);
         }
 
-        // startingIndex = 2 // Set index position for the next direction        
-        // get right to left diagonal
-        // checkDirectionWinner(getRow, startingIndex--);
-        startingIndex++
+        direction.addStartingIndex();        
     }
+
+    if(checkSymbolX.length >= 3){
+        console.log("SymbolX: ", checkSymbolX);
+        playerX.addScore();
+        alert("Winner X");
+        console.log(scoreBoard())
+    }
+
+    if(checkSymbolO.length >= 3){
+        console.log("SymbolO: ", checkSymbolO);
+        playerO.addScore();
+        alert("Winner O");
+        console.log(scoreBoard())
+    }
+    console.log("SymbolX: ", checkSymbolX);
+    console.log("SymbolO: ", checkSymbolO);
     
 }
 
@@ -73,6 +123,7 @@ function startGame(){
     do{
        getPlay.getMoves();
         console.log(getPlay.updateBoard());
+        // checkWinner();
     }
     while(prompt("Continue Game?").toUpperCase() == "Y")
 }

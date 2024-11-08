@@ -28,17 +28,19 @@ function scoreBoard(){
             `
 }
 
-// Check Winner
+// create direction to check
 const diagonalLeftToRight = checkValues(0);
 const diagonalRightToLeft = checkValues(2);
 const verticalFirstCol = checkValues(0);
+const verticalSecondCol = checkValues(1);
 
+// Check Winner
 function checkWinner(){
     
     checkDirectionWinner(diagonalLeftToRight, "diagonal-left-to-right"); // diagonal left to right
-    checkDirectionWinner(diagonalRightToLeft, "diagonal-right-to-left");// diagonal right to left
-    checkDirectionWinner(verticalFirstCol, "vertical-first-column")// vertical first column
-    // vertical second column
+    checkDirectionWinner(diagonalRightToLeft, "diagonal-right-to-left"); // diagonal right to left
+    checkDirectionWinner(verticalFirstCol, "vertical-first-column"); // vertical first column
+    checkDirectionWinner(verticalSecondCol, "vertical-second-column"); // vertical second column
     // vertical third column
     // horizontal first row
     // horizontal second row
@@ -82,6 +84,9 @@ function checkDirectionWinner(direction, option){
                 direction.subStartingIndex();
                 break;
             case "vertical-first-column":
+                row++;
+                break;
+            case "vertical-second-column":
                 row++;
                 break;
         }        

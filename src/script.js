@@ -33,6 +33,7 @@ const diagonalLeftToRight = checkValues(0);
 const diagonalRightToLeft = checkValues(2);
 const verticalFirstCol = checkValues(0);
 const verticalSecondCol = checkValues(1);
+const verticalThirdCol = checkValues(2);
 
 // Check Winner
 function checkWinner(){
@@ -41,7 +42,7 @@ function checkWinner(){
     checkDirectionWinner(diagonalRightToLeft, "diagonal-right-to-left"); // diagonal right to left
     checkDirectionWinner(verticalFirstCol, "vertical-first-column"); // vertical first column
     checkDirectionWinner(verticalSecondCol, "vertical-second-column"); // vertical second column
-    // vertical third column
+    checkDirectionWinner(verticalThirdCol, "vertical-third-column");// vertical third column
     // horizontal first row
     // horizontal second row
     // horizontal third row
@@ -87,6 +88,9 @@ function checkDirectionWinner(direction, option){
                 row++;
                 break;
             case "vertical-second-column":
+                row++;
+                break;
+            case "vertical-third-column":
                 row++;
                 break;
         }        

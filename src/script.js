@@ -31,12 +31,13 @@ function scoreBoard(){
 // Check Winner
 const diagonalLeftToRight = checkValues(0);
 const diagonalRightToLeft = checkValues(2);
+const verticalFirstCol = checkValues(0);
 
 function checkWinner(){
     
     checkDirectionWinner(diagonalLeftToRight, "diagonal-left-to-right"); // diagonal left to right
     checkDirectionWinner(diagonalRightToLeft, "diagonal-right-to-left");// diagonal right to left
-    // vertical first column
+    checkDirectionWinner(verticalFirstCol, "vertical-first-column")// vertical first column
     // vertical second column
     // vertical third column
     // horizontal first row
@@ -79,7 +80,10 @@ function checkDirectionWinner(direction, option){
             case "diagonal-right-to-left":
                 row++;
                 direction.subStartingIndex();
-                break
+                break;
+            case "vertical-first-column":
+                row++;
+                break;
         }        
     }
 

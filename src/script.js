@@ -7,23 +7,43 @@ const gameboard = (function(){
 })();
 
 // Check Winner
-// function checkWinner(){
-//     for(let count = 0; count < gameboard.length; count++){
-//         const getRow = gameboard[count]       
-//         // get left to right diagonal
-//         let count = 0; count < gameboard.length; count++
-//     }
-// }
-// checkWinner()
+function checkWinner(){
+    let startingIndex = 0;  
+    let checkSymbols = 0;    
+
+    for(let row = 0; row < gameboard.length; row++){
+        const getRow = gameboard[row];
+        let getPos = getRow[startingIndex];
+
+        // get left to right diagonal 
+        // checkDirectionWinner(getRow, startingIndex++);
+        
+        if(getPos == "X"){
+            checkSymbols++;
+            console.log(getPos);
+        }
+
+        if(checkSymbols >= 3){
+            alert("Winner: " + getPos)
+        }
+
+        // startingIndex = 2 // Set index position for the next direction        
+        // get right to left diagonal
+        // checkDirectionWinner(getRow, startingIndex--);
+        startingIndex++
+    }
+    
+}
 
 // Start Game
 function playGame(){    
     let symbol = "X";
 
     function getMoves(){
-        const position = findPosition(+prompt("Choose Moves3"));
+        const position = findPosition(+prompt(`Choose Moves: ${symbol}`));
         gameboard[position.row][position.getPos] = symbol;        
         symbol = symbol === "X" ? "O" : "X";
+        checkWinner()
         // return symbol
     }    
 

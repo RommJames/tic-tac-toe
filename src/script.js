@@ -34,6 +34,7 @@ const diagonalRightToLeft = checkValues(2);
 const verticalFirstCol = checkValues(0);
 const verticalSecondCol = checkValues(1);
 const verticalThirdCol = checkValues(2);
+const horizontalFirstRow = checkValues(0);
 
 // Check Winner
 function checkWinner(){
@@ -43,7 +44,7 @@ function checkWinner(){
     checkDirectionWinner(verticalFirstCol, "vertical-first-column"); // vertical first column
     checkDirectionWinner(verticalSecondCol, "vertical-second-column"); // vertical second column
     checkDirectionWinner(verticalThirdCol, "vertical-third-column");// vertical third column
-    // horizontal first row
+    checkDirectionWinner(horizontalFirstRow, "horizonal-first-row");// horizontal first row
     // horizontal second row
     // horizontal third row
 }
@@ -63,7 +64,9 @@ function checkValues(startIndex){
 function checkDirectionWinner(direction, option){    
     const checkSymbolX = [];
     const checkSymbolO = [];
+    let count = 0
     for(let row = 0; row < gameboard.length;){
+        
         const getRow = gameboard[row];
         let getPos = getRow[direction.getStartingIndex()];        
         
@@ -93,7 +96,15 @@ function checkDirectionWinner(direction, option){
             case "vertical-third-column":
                 row++;
                 break;
-        }        
+            case "horizonal-first-row":
+                count++;
+                direction.addStartingIndex(); 
+                break;
+        }
+               
+        if(count >= 3){
+            break;
+        } 
     }
 
     if(checkSymbolX.length >= 3){
@@ -112,6 +123,7 @@ function checkDirectionWinner(direction, option){
     console.log("SymbolX: ", checkSymbolX);
     console.log("SymbolO: ", checkSymbolO);
     
+
 }
 
 // Start Game

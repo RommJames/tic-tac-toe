@@ -30,11 +30,18 @@ function scoreBoard(){
 
 // Check Winner
 const diagonalLeftToRight = checkValues(0);
+const diagonalRightToLeft = checkValues(2);
 
 function checkWinner(){
     
-    checkDirectionWinner(diagonalLeftToRight);
-
+    checkDirectionWinner(diagonalLeftToRight, "diagonal-left-to-right"); // diagonal left to right
+    checkDirectionWinner(diagonalRightToLeft, "diagonal-right-to-left");// diagonal right to left
+    // vertical first column
+    // vertical second column
+    // vertical third column
+    // horizontal first row
+    // horizontal second row
+    // horizontal third row
 }
 
 // check and get values of starting index
@@ -43,16 +50,16 @@ function checkValues(startIndex){
 
     const addStartingIndex = () => startingIndex++;
     const subStartingIndex = () => startingIndex--;
-    const getStartingIndex = () => startingIndex = startingIndex >= 3 || startingIndex <= 0 ? startIndex : startingIndex;
+    const getStartingIndex = () => startingIndex = startingIndex >= 3 || startingIndex < 0 ? startIndex : startingIndex;
 
     return {addStartingIndex, subStartingIndex, getStartingIndex}
 }
 
 // check symbols if gets 3 symbols in a row
-function checkDirectionWinner(direction){    
+function checkDirectionWinner(direction, option){    
     const checkSymbolX = [];
     const checkSymbolO = [];
-    for(let row = 0; row < gameboard.length; row++){
+    for(let row = 0; row < gameboard.length;){
         const getRow = gameboard[row];
         let getPos = getRow[direction.getStartingIndex()];        
         
@@ -64,7 +71,16 @@ function checkDirectionWinner(direction){
             checkSymbolO.push(getPos);
         }
 
-        direction.addStartingIndex();        
+        switch(option){
+            case "diagonal-left-to-right":
+                row++;
+                direction.addStartingIndex();        
+                break;
+            case "diagonal-right-to-left":
+                row++;
+                direction.subStartingIndex();
+                break
+        }        
     }
 
     if(checkSymbolX.length >= 3){

@@ -132,7 +132,7 @@ main{
 #gameboard{
     box-shadow: var(--box-shadow);
     width: 350px;
-    height: 350px;
+    height: 365px;
     margin: 15px auto;
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
@@ -152,6 +152,10 @@ main{
     text-align: center;    
 }
 
+.cell:hover{    
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 .mark{
     display: block;    
     animation: pop 0.4s ease-in-out 1 forwards;
@@ -165,7 +169,7 @@ main{
 #form-gameplay{
     box-shadow: var(--box-shadow) inset;
     min-width: 300px;
-    max-width: 500px;
+    max-width: 500px;    
     margin: 25px auto;
     border: 5px solid black;
     border-radius: 15px;

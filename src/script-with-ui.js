@@ -2,7 +2,11 @@
 // --- Scoreboard
 const xScoreHTML = document.querySelector("#x-score");
 const oScoreHTML = document.querySelector("#o-score");
+const playerTurnsHTML = document.querySelector("#player-turns");
+
 // --- Main
+const main = document.querySelector("main");
+
 // -------- Form Gameplay
 const formGameplayHTML = document.querySelector("#form-gameplay")
 const opponentGameplayHTML = document.querySelector("#opponent-gameplay");
@@ -24,6 +28,33 @@ const gameboard = (function(){
 let opponent = "";
 let yourMarks = "";
 // Functions
+function retrieveGameboard(){
+    const gameboardHTML = document.createElement("div");
+    gameboardHTML.setAttribute("id", "gameboard");
+
+    gameboard.forEach(row => {
+        const rowHTML = document.createElement("div");
+        rowHTML.setAttribute("class", "row");    
+        gameboardHTML.append(rowHTML);
+
+        row.forEach(cell => {
+            const cellHTML = document.createElement("div");
+            cellHTML.setAttribute("class", "cell");
+            const markHTML = document.createElement("span");
+            markHTML.setAttribute("class", "mark")
+            markHTML.textContent = cell
+
+            rowHTML.append(cellHTML);          
+            cellHTML.append(markHTML)  
+        })
+
+    });
+        
+
+    main.append(gameboardHTML);
+}
+retrieveGameboard();
+
 function chooseGameplay(){
     opponentGameplayHTML.addEventListener("click", function(e){
 
@@ -62,7 +93,7 @@ function chooseGameplay(){
     }) 
 
 }
-chooseGameplay()
+// chooseGameplay()
 
 {/* <div id="gameboard">
         <div class="row">

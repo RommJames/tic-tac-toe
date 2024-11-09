@@ -35,6 +35,7 @@ const verticalFirstCol = checkValues(0);
 const verticalSecondCol = checkValues(1);
 const verticalThirdCol = checkValues(2);
 const horizontalFirstRow = checkValues(0);
+const horizontalSecondRow = checkValues(0);
 
 // Check Winner
 function checkWinner(){
@@ -45,7 +46,7 @@ function checkWinner(){
     checkDirectionWinner(verticalSecondCol, "vertical-second-column"); // vertical second column
     checkDirectionWinner(verticalThirdCol, "vertical-third-column");// vertical third column
     checkDirectionWinner(horizontalFirstRow, "horizonal-first-row");// horizontal first row
-    // horizontal second row
+    checkDirectionWinner(horizontalSecondRow, "horizonal-second-row");// horizontal second row
     // horizontal third row
 }
 
@@ -67,6 +68,10 @@ function checkDirectionWinner(direction, option){
     let count = 0
     for(let row = 0; row < gameboard.length;){
         
+        if(option == "horizonal-second-row"){
+            row = 1;
+        }
+
         const getRow = gameboard[row];
         let getPos = getRow[direction.getStartingIndex()];        
         
@@ -100,8 +105,12 @@ function checkDirectionWinner(direction, option){
                 count++;
                 direction.addStartingIndex(); 
                 break;
+            case "horizonal-second-row":
+                count++;                
+                direction.addStartingIndex(); 
+                break;
         }
-               
+        console.log(option, ": ", count);        
         if(count >= 3){
             break;
         } 
@@ -126,7 +135,7 @@ function checkDirectionWinner(direction, option){
 
 }
 
-// Start Game
+// Start Game, Put the marks or symbols into the cell
 function playGame(){    
     let symbol = "X";
 

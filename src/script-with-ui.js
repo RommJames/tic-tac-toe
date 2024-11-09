@@ -42,9 +42,17 @@ function retrieveGameboard(){
             cellHTML.setAttribute("class", "cell");
             const markHTML = document.createElement("span");
             markHTML.setAttribute("class", "mark")
-            markHTML.textContent = cell
+            markHTML.textContent = cell // NOTE: change this value to space, just using cell for the moment for testing
+            cellHTML.addEventListener("click", function(){
+                const getMove = makeMove(cell);                
 
-            rowHTML.append(cellHTML);          
+                markHTML.style.animation = "pop 0.4s ease-in-out 1 forwards"
+                gameboardHTML.remove();
+                getMove.getMoves()
+                getMove.updateGameboard();
+            })
+            
+            rowHTML.append(cellHTML);
             cellHTML.append(markHTML)  
         })
 
@@ -54,6 +62,35 @@ function retrieveGameboard(){
     main.append(gameboardHTML);
 }
 retrieveGameboard();
+
+
+
+// Find Position, It will inherit by makeMove
+function findPosition(cell){
+    for(let row = 0; row <= gameboard.length; row++){
+        const getPos = gameboard[row].indexOf(cell);
+        if(getPos != -1){
+            console.log("Row: ", row);
+            console.log("Pos: ", getPos);
+            return {row, getPos}
+        }
+    }
+}
+
+// Make Moves, put the marks or symbols into the cell
+function makeMove(cell){
+    let symbol = "X";
+
+    function getMoves(){
+        const position = findPosition(+cell);
+        gameboard[position.row][position.getPos] = symbol
+        symbol = symbol === "X" ? "O" : "X";          
+    }
+
+    const updateGameboard = ()=> retrieveGameboard();
+
+    return {getMoves, updateGameboard}
+}
 
 function chooseGameplay(){
     opponentGameplayHTML.addEventListener("click", function(e){

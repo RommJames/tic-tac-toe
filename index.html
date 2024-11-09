@@ -22,24 +22,24 @@
         </div>
     </div>
 </header>
-<main>
-    <div id="gameboard">
-        <div class="row">
-            <div class="cell">X</div>
-            <div class="cell">O</div>
-            <div class="cell"></div>
+<main> 
+    <h3 id="player-turns"></h3>
+    <div id="form-gameplay">
+        <div id="opponent-gameplay">
+            <h1>Choose Gameplay</h1>
+            <div class="btn-container">
+                <button id="vs-ai"> Vs computer </button>                
+                <button id="vs-2p"> 2 Player </button>
+            </div>            
         </div>
-        <div class="row">
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
+        <div id="choose-mark" class="hide-game-control">
+            <h1>Player 1 - Choose your Symbols</h1>            
+            <div class="btn-container">
+            <button id="choose-x"> X </button>            
+            <button id="choose-o"> O </button>
+            </div>            
         </div>
-        <div class="row">
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-        </div>
-    </div>    
+    </div> 
 </main>
 <footer>
     <a href="https://rommjames.github.io/About-Me/" target="_blank">
@@ -47,7 +47,7 @@
     </a>
     <p>&copy; 2024 RommJames. All rights reserved.</p>
 </footer>
-<script src="src/script.js"></script>
+<!-- <script src="src/script.js"></script> -->
 <script src="src/script-with-ui.js"></script>
 </body>
 </html>

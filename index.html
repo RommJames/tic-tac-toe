@@ -8,8 +8,46 @@
     <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
-<h1>Tic-Tac-Toe Game</h1>
-<h2>X - O</h2>
+<header>
+    <div id="header-title">        
+        <h1><i>Tic-Tac-Toe Game</i></h1>        
+    </div>    
+    <div id="scoreboard">
+        <div id="player-x">
+            <b> - Player X - <span id="x-score" class="score">0</span></b>
+        </div>
+        <div class="vert-line"></div>
+        <div id="player-o">
+            <b><span id="o-score" class="score">0</span>  - Player O - </b>
+        </div>
+    </div>
+</header>
+<main>
+    <div id="gameboard">
+        <div class="row">
+            <div class="cell">X</div>
+            <div class="cell">O</div>
+            <div class="cell"></div>
+        </div>
+        <div class="row">
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+        </div>
+        <div class="row">
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+        </div>
+    </div>    
+</main>
+<footer>
+    <a href="https://rommjames.github.io/About-Me/" target="_blank">
+        <img src="media/rj-logo-3-nobg.png" alt="my-logo">
+    </a>
+    <p>&copy; 2024 RommJames. All rights reserved.</p>
+</footer>
 <script src="src/script.js"></script>
+<script src="src/script-with-ui.js"></script>
 </body>
 </html>

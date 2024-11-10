@@ -30,6 +30,39 @@ const getMove = makeMove();
 let opponent = "";
 let yourMarks = "";
 // Functions
+
+// Players
+function player(){
+    let score = 0;
+    const addScore = ()=> score++;
+    const getScore = ()=> score;
+
+    return {addScore, getScore};
+}
+
+
+
+function scoreBoard(){
+    const playerX = player();
+    const playerO = player();
+
+    function retrieveScore(){
+        xScoreHTML.textContent = playerX.getScore();
+        oScoreHTML.textContent = playerO.getScore();    
+    }    
+
+    function addScorePlayerX(){
+        playerX.addScore();        
+    }
+
+    function addScorePlayerO(){
+        playerO.addScore();
+    }
+
+    return {retrieveScore, addScorePlayerX, addScorePlayerO};
+}
+
+// Retrieve Gameboard to HTML
 function retrieveGameboard(){
     const gameboardHTML = document.createElement("div");
     gameboardHTML.setAttribute("id", "gameboard");
@@ -93,6 +126,8 @@ function makeMove(){
 
     return {getMoves, updateGameboard}
 }
+
+// Choose Symbols and opponent
 
 function chooseGameplay(){
     opponentGameplayHTML.addEventListener("click", function(e){

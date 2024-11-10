@@ -25,6 +25,8 @@ const gameboard = (function(){
     ]
 })();
 
+const getMove = makeMove();
+
 let opponent = "";
 let yourMarks = "";
 // Functions
@@ -44,11 +46,11 @@ function retrieveGameboard(){
             markHTML.setAttribute("class", "mark")
             markHTML.textContent = cell // NOTE: change this value to space, just using cell for the moment for testing
             cellHTML.addEventListener("click", function(){
-                const getMove = makeMove(cell);                
+               
 
                 markHTML.style.animation = "pop 0.4s ease-in-out 1 forwards"
                 gameboardHTML.remove();
-                getMove.getMoves()
+                getMove.getMoves(cell)
                 getMove.updateGameboard();
             })
             
@@ -78,10 +80,10 @@ function findPosition(cell){
 }
 
 // Make Moves, put the marks or symbols into the cell
-function makeMove(cell){
+function makeMove(){
     let symbol = "X";
-
-    function getMoves(){
+    // let cell 
+    function getMoves(cell){
         const position = findPosition(+cell);
         gameboard[position.row][position.getPos] = symbol
         symbol = symbol === "X" ? "O" : "X";          

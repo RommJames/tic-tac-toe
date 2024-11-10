@@ -34,6 +34,13 @@ let opponent = "";
 let yourMarks = "";
 // Functions / Objects
 
+// Reset Gameboard Data
+function resetGameboard(){    
+    gameboard[0] = [1, 2, 3];
+    gameboard[1] = [4, 5, 6];
+    gameboard[2] = [7, 8, 9];    
+}
+
 // Players
 function player(){
     let score = 0;
@@ -99,6 +106,7 @@ function checkValues(startIndex){
 }
 
 // check symbols if gets 3 marks in a row
+let countMoves = 0;
 function checkDirectionWinner(direction, option){
     let checkSymbolX = [];
     let checkSymbolO = [];
@@ -164,27 +172,67 @@ function checkDirectionWinner(direction, option){
     }
 
     if(checkSymbolX.length >= 3){
-        console.log("SymbolX: ", checkSymbolX);        
+        console.log("Test SymbolX: ", checkSymbolX);        
         // alert("Winner X");        
-        playerTurnsHTML.textContent = `Round ${round}: Player X wins! Next Round, Player X make move!`        
-        updateScore.addScorePlayerX();   
+        playerTurnsHTML.textContent = `Round ${round}: Player X wins! Next Round will proceed in 3 seconds...`
+        setTimeout(() => {
+            playerTurnsHTML.textContent = `Player O make move!` 
+            isGameStart = true  
+            resetGameboard()       
+            const getGameboardHTML = document.getElementById("gameboard");
+            getGameboardHTML.remove();
+            retrieveGameboard()
+        }, 3000);
+
+        // Update Round
         round++
-        roundHTML.textContent = `Round ${round}`  
-        isGameStart = false   
+        roundHTML.textContent = `Round ${round}`
+        
+        updateScore.addScorePlayerX();   
+  
+        isGameStart = false          
+        countMoves = 0;
     }
 
     if(checkSymbolO.length >= 3){
         console.log("SymbolO: ", checkSymbolO);        
         // alert("Winner O");        
-        playerTurnsHTML.textContent = `Round ${round}: Player O wins! Next Round, Player X make move!`
+        playerTurnsHTML.textContent = `Round ${round}: Player O wins! Next Round will proceed in 3 seconds...`
+        setTimeout(() => {
+            playerTurnsHTML.textContent = `Round ${round}: Player O wins! Next Round, Player X make move!`   
+            isGameStart = true 
+            resetGameboard()
+            const getGameboardHTML = document.getElementById("gameboard");
+            getGameboardHTML.remove();
+            retrieveGameboard()
+        }, 3000);
+        
         updateScore.addScorePlayerO();    
-        round++;
-        roundHTML.textContent = `Round ${round}`;
-        isGameStart = false;
+        isGameStart = false;  
+        // Update Round
+        round++
+        roundHTML.textContent = `Round ${round}`
+        countMoves = 0;
     }
+    console.log("count moves: ", countMoves)
 
-    // add round
-
+    if(countMoves >= 71){
+        setTimeout(() => {
+            playerTurnsHTML.textContent = `Make Move, Player O!` 
+            isGameStart = true 
+            resetGameboard()
+            const getGameboardHTML = document.getElementById("gameboard");
+            getGameboardHTML.remove();
+            retrieveGameboard()
+            countMoves = 0;
+            // Update Round
+            round++
+            roundHTML.textContent = `Round ${round}`
+        }, 3000);
+        playerTurnsHTML.textContent = `Tie Game! Next Round will proceed in 3 seconds...` 
+    }else{
+        countMoves++;
+    }
 
     // Update Score in HTML
     updateScore.retrieveScore();

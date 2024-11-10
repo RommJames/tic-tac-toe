@@ -88,6 +88,10 @@ header{
     gap: 5px;
 }
 
+#header-title{
+    text-align: center;
+}
+
 /* scoreboard */
 #scoreboard{
     background-color: var(--background);

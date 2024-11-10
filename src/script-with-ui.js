@@ -3,6 +3,7 @@
 const xScoreHTML = document.querySelector("#x-score");
 const oScoreHTML = document.querySelector("#o-score");
 const playerTurnsHTML = document.querySelector("#player-turns");
+const roundHTML = document.querySelector("#rounds");
 
 // --- Main
 const main = document.querySelector("main");
@@ -26,6 +27,8 @@ const gameboard = (function(){
 })();
 
 const getMove = makeMove();
+let round = 1;
+let isGameStart = true
 
 let opponent = "";
 let yourMarks = "";
@@ -162,19 +165,32 @@ function checkDirectionWinner(direction, option){
 
     if(checkSymbolX.length >= 3){
         console.log("SymbolX: ", checkSymbolX);        
-        alert("Winner X");        
-        updateScore.addScorePlayerX();        
+        // alert("Winner X");        
+        playerTurnsHTML.textContent = `Round ${round}: Player X wins! Next Round, Player X make move!`        
+        updateScore.addScorePlayerX();   
+        round++
+        roundHTML.textContent = `Round ${round}`  
+        isGameStart = false   
     }
 
     if(checkSymbolO.length >= 3){
         console.log("SymbolO: ", checkSymbolO);        
-        alert("Winner O");        
-        updateScore.addScorePlayerO();        
+        // alert("Winner O");        
+        playerTurnsHTML.textContent = `Round ${round}: Player O wins! Next Round, Player X make move!`
+        updateScore.addScorePlayerO();    
+        round++;
+        roundHTML.textContent = `Round ${round}`;
+        isGameStart = false;
     }
 
+    // add round
+
+
+    // Update Score in HTML
     updateScore.retrieveScore();
-    console.log("SymbolX: ", checkSymbolX);
-    console.log("SymbolO: ", checkSymbolO);
+    // checkSymbolX
+    console.log(option, " | SymbolX: ", checkSymbolX);
+    console.log(option, " | SymbolO: ", checkSymbolO);
 }
 
 // Retrieve Gameboard to HTML
@@ -194,17 +210,21 @@ function retrieveGameboard(){
             const markHTML = document.createElement("span");
             markHTML.setAttribute("class", "mark")
             cellData = cell
-            console.log(`cellData: ${cellData}, cell: ${cell}`)
+            // console.log(`cellData: ${cellData}, cell: ${cell}`)
             if(cellData == "X" || cellData == "O"){                             
                 cellHTML.setAttribute("class", "cell-disable");   
                 cellData = cell;                
             }else{
-                cellData = " "
-                cellHTML.setAttribute("class", "cell");
-                cellHTML.addEventListener("click", function(){    
-                    clickCell(markHTML,cell, gameboardHTML, cellHTML);
-                    console.log(cellHTML)
-                })            
+                cellData = " "                
+                if(isGameStart == true){
+                    cellHTML.addEventListener("click", function(){    
+                        clickCell(markHTML,cell, gameboardHTML, cellHTML);
+                        // console.log(cellHTML)
+                    })  
+                    cellHTML.setAttribute("class", "cell");
+                }else{
+                    cellHTML.setAttribute("class", "cell-disable");   
+                }
                 
             }
             markHTML.textContent = cellData             
@@ -249,6 +269,7 @@ function makeMove(){
         const position = findPosition(+cell);
         gameboard[position.row][position.getPos] = symbol
         symbol = symbol === "X" ? "O" : "X";  
+        playerTurnsHTML.textContent = `Your turns, 'Player ${symbol}'`
         checkWinner();
     }
 

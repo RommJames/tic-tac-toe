@@ -187,7 +187,7 @@ function startGame(){
     while(prompt("Continue Game?").toUpperCase() == "Y")
 }
 
-// startGame()
+startGame()
 
 
 // Testing Area

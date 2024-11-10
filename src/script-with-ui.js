@@ -29,7 +29,7 @@ const getMove = makeMove();
 
 let opponent = "";
 let yourMarks = "";
-// Functions
+// Functions / Objects
 
 // Players
 function player(){
@@ -39,8 +39,6 @@ function player(){
 
     return {addScore, getScore};
 }
-
-
 
 function scoreBoard(){
     const playerX = player();
@@ -62,7 +60,125 @@ function scoreBoard(){
     return {retrieveScore, addScorePlayerX, addScorePlayerO};
 }
 
+const updateScore = scoreBoard();
+
+// create direction to check
+const diagonalLeftToRight = checkValues(0);
+const diagonalRightToLeft = checkValues(2);
+const verticalFirstCol = checkValues(0);
+const verticalSecondCol = checkValues(1);
+const verticalThirdCol = checkValues(2);
+const horizontalFirstRow = checkValues(0);
+const horizontalSecondRow = checkValues(0);
+const horizontalThirdRow = checkValues(0);
+
+// Check Winner
+function checkWinner(){
+    checkDirectionWinner(diagonalLeftToRight, "diagonal-left-to-right"); // diagonal left to right
+    checkDirectionWinner(diagonalRightToLeft, "diagonal-right-to-left"); // diagonal right to left
+    checkDirectionWinner(verticalFirstCol, "vertical-first-column"); // vertical first column
+    checkDirectionWinner(verticalSecondCol, "vertical-second-column"); // vertical second column
+    checkDirectionWinner(verticalThirdCol, "vertical-third-column");// vertical third column
+    checkDirectionWinner(horizontalFirstRow, "horizontal-first-row");// horizontal first row
+    checkDirectionWinner(horizontalSecondRow, "horizontal-second-row");// horizontal second row
+    checkDirectionWinner(horizontalThirdRow, "horizontal-third-row"); // horizontal third row
+}
+
+// check and get values of starting index for checking of symbols
+function checkValues(startIndex){
+    let startingIndex = startIndex;
+
+    const addStartingIndex = ()=> startingIndex++;
+    const subStartingIndex = () => startingIndex--;
+    const getStartingIndex = () => startingIndex = startingIndex >= 3 || startingIndex < 0 ? startIndex : startingIndex;
+
+    return {addStartingIndex, subStartingIndex, getStartingIndex}
+}
+
+// check symbols if gets 3 marks in a row
+function checkDirectionWinner(direction, option){
+    let checkSymbolX = [];
+    let checkSymbolO = [];
+    let count = 0;
+
+    for(let row = 0; row < gameboard.length;){
+
+        if(option == "horizontal-second-row"){            
+            row = 1;
+        }
+
+        if(option == "horizontal-third-row"){
+            row = 2;
+        }
+
+        const getRow = gameboard[row];
+        let getPos = getRow[direction.getStartingIndex()];
+
+        if(getPos == "X"){            
+            checkSymbolX.push(getPos);
+        }
+
+        if(getPos == "O"){
+            checkSymbolO.push(getPos);
+        }
+
+        switch(option){
+            case "diagonal-left-to-right":
+                row++;
+                direction.addStartingIndex();        
+                break;
+            case "diagonal-right-to-left":
+                row++;
+                direction.subStartingIndex();
+                break;
+            case "vertical-first-column":
+                row++;
+                break;
+            case "vertical-second-column":
+                row++;
+                break;
+            case "vertical-third-column":
+                row++;
+                break;
+            case "horizontal-first-row":
+                count++;
+                direction.addStartingIndex(); 
+                break;
+            case "horizontal-second-row":
+                count++;      
+                // alert(`row: ${row}, getPos: ${getPos}, option: ${option}`);          
+                direction.addStartingIndex(); 
+                break;
+            case "horizontal-third-row":
+                count++;                
+                direction.addStartingIndex(); 
+                break;
+        }
+
+        if(count >= 3){
+            break;
+        }
+    }
+
+    if(checkSymbolX.length >= 3){
+        console.log("SymbolX: ", checkSymbolX);        
+        alert("Winner X");        
+        updateScore.addScorePlayerX();        
+    }
+
+    if(checkSymbolO.length >= 3){
+        console.log("SymbolO: ", checkSymbolO);        
+        alert("Winner O");        
+        updateScore.addScorePlayerO();        
+    }
+
+    updateScore.retrieveScore();
+    console.log("SymbolX: ", checkSymbolX);
+    console.log("SymbolO: ", checkSymbolO);
+}
+
 // Retrieve Gameboard to HTML
+let cellData = " ";
 function retrieveGameboard(){
     const gameboardHTML = document.createElement("div");
     gameboardHTML.setAttribute("id", "gameboard");
@@ -77,15 +193,20 @@ function retrieveGameboard(){
             cellHTML.setAttribute("class", "cell");
             const markHTML = document.createElement("span");
             markHTML.setAttribute("class", "mark")
-            markHTML.textContent = cell // NOTE: change this value to space, just using cell for the moment for testing
-            cellHTML.addEventListener("click", function(){
-               
+            cellData = cell
+            console.log(`cellData: ${cellData}, cell: ${cell}`)
+            if(cellData == "X" || cellData == "O"){                                
+                cellData = cell;
+            }else{
+                cellData = " "
+            }
+            markHTML.textContent = cellData // NOTE: change this value to space, just using cell for the moment for testing
 
-                markHTML.style.animation = "pop 0.4s ease-in-out 1 forwards"
-                gameboardHTML.remove();
-                getMove.getMoves(cell)
-                getMove.updateGameboard();
-            })
+            cellHTML.addEventListener("click", function(){    
+
+                clickCell(markHTML,cell, gameboardHTML, cellHTML);
+                console.log(cellHTML)
+            })            
             
             rowHTML.append(cellHTML);
             cellHTML.append(markHTML)  
@@ -97,7 +218,14 @@ function retrieveGameboard(){
     main.append(gameboardHTML);
 }
 retrieveGameboard();
-
+// Function when the cell is clicked
+function clickCell(markData, cellData, gameboardDOM, cellItself){
+    markData.style.animation = "pop 0.4s ease-in-out 1 forwards"
+    gameboardDOM.remove();
+    getMove.getMoves(cellData)
+    getMove.updateGameboard();
+    cellItself.setAttribute("class", "cell-disable");    
+}
 
 
 // Find Position, It will inherit by makeMove
@@ -119,7 +247,8 @@ function makeMove(){
     function getMoves(cell){
         const position = findPosition(+cell);
         gameboard[position.row][position.getPos] = symbol
-        symbol = symbol === "X" ? "O" : "X";          
+        symbol = symbol === "X" ? "O" : "X";  
+        checkWinner();
     }
 
     const updateGameboard = ()=> retrieveGameboard();

@@ -145,16 +145,21 @@ main{
     grid-template-columns: repeat(3, 1fr);
 }
 
-.cell{
-    border: 2.5px solid rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+.cell, .cell-disable{
+    border: 2.5px solid rgba(0, 0, 0, 0.1);    
     font-size: 5rem;
     text-align: center;    
 }
 
 .cell:hover{    
     background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
+
+.cell-disable:hover{
+    cursor: default;
+}
+
 
 .mark{
     display: block;    

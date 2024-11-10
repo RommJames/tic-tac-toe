@@ -192,9 +192,7 @@ function checkDirectionWinner(direction, option){
   
         isGameStart = false          
         countMoves = 0;
-    }
-
-    if(checkSymbolO.length >= 3){
+    }else if(checkSymbolO.length >= 3){
         console.log("SymbolO: ", checkSymbolO);        
         // alert("Winner O");        
         playerTurnsHTML.textContent = `Round ${round}: Player O wins! Next Round will proceed in 3 seconds...`
@@ -213,10 +211,8 @@ function checkDirectionWinner(direction, option){
         round++
         roundHTML.textContent = `Round ${round}`
         countMoves = 0;
-    }
-    console.log("count moves: ", countMoves)
-
-    if(countMoves >= 71){
+    }else if(countMoves >= 71){
+        console.log("count moves: ", countMoves)
         setTimeout(() => {
             playerTurnsHTML.textContent = `Make Move, Player O!` 
             isGameStart = true 
@@ -225,9 +221,9 @@ function checkDirectionWinner(direction, option){
             getGameboardHTML.remove();
             retrieveGameboard()
             countMoves = 0;
-            // Update Round
-            round++
-            roundHTML.textContent = `Round ${round}`
+            // // Update Round
+            // round++
+            // roundHTML.textContent = `Round ${round}`
         }, 3000);
         playerTurnsHTML.textContent = `Tie Game! Next Round will proceed in 3 seconds...` 
     }else{

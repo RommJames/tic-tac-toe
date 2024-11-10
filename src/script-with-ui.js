@@ -190,16 +190,17 @@ function retrieveGameboard(){
 
         row.forEach(cell => {
             const cellHTML = document.createElement("div");
-            cellHTML.setAttribute("class", "cell");
+           
             const markHTML = document.createElement("span");
             markHTML.setAttribute("class", "mark")
             cellData = cell
             console.log(`cellData: ${cellData}, cell: ${cell}`)
-            if(cellData == "X" || cellData == "O"){                                
+            if(cellData == "X" || cellData == "O"){                             
+                cellHTML.setAttribute("class", "cell-disable");   
                 cellData = cell;                
             }else{
                 cellData = " "
-
+                cellHTML.setAttribute("class", "cell");
                 cellHTML.addEventListener("click", function(){    
                     clickCell(markHTML,cell, gameboardHTML, cellHTML);
                     console.log(cellHTML)

@@ -162,9 +162,10 @@ main{
 
 
 .mark{
-    display: block;    
+    display: block;        
     /* animation: pop 0.4s ease-in-out 1 forwards; */
     /* background-color: red; */
+    /* transition: all .5s ease-in-out; */
 }
 
 .remove-cursor{

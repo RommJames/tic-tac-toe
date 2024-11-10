@@ -196,17 +196,17 @@ function retrieveGameboard(){
             cellData = cell
             console.log(`cellData: ${cellData}, cell: ${cell}`)
             if(cellData == "X" || cellData == "O"){                                
-                cellData = cell;
+                cellData = cell;                
             }else{
                 cellData = " "
+
+                cellHTML.addEventListener("click", function(){    
+                    clickCell(markHTML,cell, gameboardHTML, cellHTML);
+                    console.log(cellHTML)
+                })            
+                
             }
-            markHTML.textContent = cellData // NOTE: change this value to space, just using cell for the moment for testing
-
-            cellHTML.addEventListener("click", function(){    
-
-                clickCell(markHTML,cell, gameboardHTML, cellHTML);
-                console.log(cellHTML)
-            })            
+            markHTML.textContent = cellData             
             
             rowHTML.append(cellHTML);
             cellHTML.append(markHTML)  

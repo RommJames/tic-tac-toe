@@ -17,6 +17,13 @@ const vs2Pbtn = document.querySelector("#vs-2p");
 const chooseXbtn = document.querySelector("#choose-x");
 const chooseObtn = document.querySelector("#choose-o");
 
+// Game Over Panel
+const gameOverHTML = document.querySelector("#game-over");
+const gameOverFormHTML = document.querySelector("#game-over-form");
+const gameOverMessageHTML = document.querySelector("#game-over-message");
+const playAgainBtn = document.querySelector("#play-again");
+const endGameBtn = document.querySelector("#end-game");
+
 // Initialize
 const gameboard = (function(){
     return [
@@ -67,7 +74,10 @@ function scoreBoard(){
         playerO.addScore();
     }
 
-    return {retrieveScore, addScorePlayerX, addScorePlayerO};
+    const getPlayerXscore = ()=> playerX.getScore()
+    const getPlayerOscore = ()=> playerO.getScore()
+
+    return {retrieveScore, addScorePlayerX, addScorePlayerO, getPlayerXscore, getPlayerOscore};
 }
 
 const updateScore = scoreBoard();
@@ -174,58 +184,32 @@ function checkDirectionWinner(direction, option){
     if(checkSymbolX.length >= 3){
         console.log("Test SymbolX: ", checkSymbolX);        
         // alert("Winner X");        
-        playerTurnsHTML.textContent = `Round ${round}: Player X wins! Next Round will proceed in 3 seconds...`
-        setTimeout(() => {
-            playerTurnsHTML.textContent = `Player O make move!` 
-            isGameStart = true  
-            resetGameboard()       
-            const getGameboardHTML = document.getElementById("gameboard");
-            getGameboardHTML.remove();
-            retrieveGameboard()
-        }, 3000);
 
-        // Update Round
-        round++
-        roundHTML.textContent = `Round ${round}`
-        
         updateScore.addScorePlayerX();   
-  
         isGameStart = false          
         countMoves = 0;
-    }else if(checkSymbolO.length >= 3){
-        console.log("SymbolO: ", checkSymbolO);        
-        // alert("Winner O");        
-        playerTurnsHTML.textContent = `Round ${round}: Player O wins! Next Round will proceed in 3 seconds...`
-        setTimeout(() => {
-            playerTurnsHTML.textContent = `Round ${round}: Player O wins! Next Round, Player X make move!`   
-            isGameStart = true 
-            resetGameboard()
-            const getGameboardHTML = document.getElementById("gameboard");
-            getGameboardHTML.remove();
-            retrieveGameboard()
-        }, 3000);
-        
-        updateScore.addScorePlayerO();    
-        isGameStart = false;  
+        gameEnds("O", "X");
         // Update Round
         round++
         roundHTML.textContent = `Round ${round}`
+
+    }else if(checkSymbolO.length >= 3){
+        console.log("SymbolO: ", checkSymbolO);        
+        // alert("Winner O");       
+
+        updateScore.addScorePlayerO();    
+        isGameStart = false;          
         countMoves = 0;
+        gameEnds("X", "O");
+        // Update Round
+        round++
+        roundHTML.textContent = `Round ${round}`
+        
     }else if(countMoves >= 71){
         console.log("count moves: ", countMoves)
-        setTimeout(() => {
-            playerTurnsHTML.textContent = `Make Move, Player O!` 
-            isGameStart = true 
-            resetGameboard()
-            const getGameboardHTML = document.getElementById("gameboard");
-            getGameboardHTML.remove();
-            retrieveGameboard()
-            countMoves = 0;
-            // // Update Round
-            // round++
-            // roundHTML.textContent = `Round ${round}`
-        }, 3000);
-        playerTurnsHTML.textContent = `Tie Game! Next Round will proceed in 3 seconds...` 
+        isGameStart = false;
+        gameEnds(getMove.getSymbol(), "Tie");
+        countMoves = 0;
     }else{
         countMoves++;
     }
@@ -283,6 +267,7 @@ function retrieveGameboard(){
     main.append(gameboardHTML);
 }
 retrieveGameboard();
+
 // Function when the cell is clicked
 function clickCell(markData, cellData, gameboardDOM, cellItself){
     markData.style.animation = "pop 0.4s ease-in-out 1 forwards"
@@ -291,6 +276,60 @@ function clickCell(markData, cellData, gameboardDOM, cellItself){
     getMove.updateGameboard();
     cellItself.setAttribute("class", "cell-disable");    
 }
+
+// Function when the game ends
+function gameEnds(playerSymbol, roundWinner){
+    let playerXscore = updateScore.getPlayerXscore();
+    let playerOscore = updateScore.getPlayerOscore();
+    gameOverHTML.style.transform = "scale(1)";
+    playerTurnsHTML.textContent = "";
+    
+    // Round Winner Message    
+    if(roundWinner == "Tie"){
+        gameOverMessageHTML.textContent = `Round ${round}: Tie Game!`
+        
+    }else{
+        gameOverMessageHTML.textContent = `Round ${round} winner: Player ${roundWinner}`;
+    }
+    
+
+    playAgainBtn.addEventListener("click", function(){
+        playerTurnsHTML.textContent = `Player ${playerSymbol} make move!`
+        isGameStart = true;
+        resetGameboard();
+        const getGameboardHTML = document.getElementById("gameboard");
+        getGameboardHTML.remove();
+        retrieveGameboard();
+
+        gameOverHTML.style.transform = "scale(0)";
+    })
+
+    endGameBtn.addEventListener("click", function(){
+        let winner
+        let winnerScore
+
+        if(+playerXscore > +playerOscore){
+            winner = "X";
+            winnerScore = playerXscore;
+        }else{
+            winner = "O";
+            winnerScore = playerXscore;
+        }
+
+        if(+playerXscore == +playerOscore){
+            playerTurnsHTML.textContent = `Thank You for Playing! Tie game! With a score of ${playerOscore}`
+        }else{
+            playerTurnsHTML.textContent = `Thank You for Playing! Player ${winner} wins with a score of ${winnerScore}`;
+        }
+
+        isGameStart = false;
+
+
+
+        gameOverHTML.style.transform = "scale(0)";
+    })
+}
+
 
 
 // Find Position, It will inherit by makeMove
@@ -317,9 +356,11 @@ function makeMove(){
         checkWinner();
     }
 
+    const getSymbol = ()=> symbol;
+
     const updateGameboard = ()=> retrieveGameboard();
 
-    return {getMoves, updateGameboard}
+    return {getMoves, updateGameboard, getSymbol}
 }
 
 // Choose Symbols and opponent

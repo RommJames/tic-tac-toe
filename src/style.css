@@ -231,6 +231,35 @@ button:hover{
     position: relative;    
 }
 
+/* Game Over Panel */
+#game-over{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0);
+}
+
+#game-over-form{
+    min-width: 300px;
+    width: 500px; 
+    background-color: white;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.bg-close-color{
+    background-color: rgb(185, 109, 109);
+}
+
+.btn-container{
+    margin-top: 10px;
+}
 /* footer */
 footer{
     /* position: fixed;

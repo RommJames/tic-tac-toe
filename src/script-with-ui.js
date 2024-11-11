@@ -444,14 +444,13 @@ function chooseGameplay(){
                         retrieveGameboard()
                     }) 
                 }
+                opponentHTML.textContent = `(vs AI)`
                 break;
             case "vs-2p":
                 stopMoveAi = true;
                 opponent = "2p";
                 if(opponent == "2p"){
                     opponentHTML.textContent = `(2 Player)`
-                }else{
-                    opponentHTML.textContent = `(vs AI)`
                 }
                 formGameplayHTML.style.display = "none";  
                 retrieveGameboard()     

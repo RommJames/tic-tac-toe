@@ -1,13 +1,27 @@
-# Tic-Tac-Toe
+# Tic-Tac-Toe Web Game
 
-Welcome to **Tic-Tac-Toe**, a simple yet powerful web app game that reimagines the classic Tic-Tac-Toe experience! This project is built with a focus on modularity, code reusability, and minimal global state. Through the clever use of **Factory Functions**, **Closures**, and the **Module Pattern**, this implementation offers a clean, scalable architecture while maintaining the spirit of the traditional game.
+This is a web-based Tic-Tac-Toe game where you can play against a friend or challenge an AI. The game is simple, interactive, and provides an engaging experience for both casual players and those looking to challenge a computer opponent.
 
-## Key Features:
-- **Modular Design**: The game logic is split into manageable, self-contained modules.
-- **Factory Functions**: Game pieces, player behavior, and game states are encapsulated in factory functions that provide flexibility and reusability.
-- **Closure**: Private data, such as the game board and current player, is encapsulated within closures, ensuring that each game instance remains isolated and independent.
-- **Minimal Global State**: Global variables are kept to a minimum, reducing potential side effects and making the app more maintainable.
+## Features
 
-## Why this project?
-This game serves as a practice ground for mastering JavaScript design patterns like Factory Functions, Closures, and the Module Pattern. By focusing on creating a compact, efficient, and modular application, you'll learn how to build clean, organized code without unnecessary global dependencies.
+- **Two Game Modes**:
+  - **2 Player Game**: Play with a friend, with Player X starting the game.
+  - **VS Computer**: Choose whether you will be Player X or Player O to play against an AI opponent.
 
+- **Score Tracking**:
+  - Every time a player wins, their score is updated automatically.
+  - The game tracks scores for both Player X and Player O.
+
+- **End of Round Options**:
+  - After a round ends, you can choose to continue to the next round or stop the game.
+  - If you stop, the player with the highest score is declared the winner.
+
+- **Restart Option**: After ending the game, you have the option to restart and play again.
+
+## Code Design
+
+- **Factory Functions**: The game logic is built using factory functions to create reusable and independent game objects (such as players and the game board), ensuring modularity and flexibility.
+
+- **Closures**: Closures are used to maintain private state and provide encapsulation, making the game state (like scores and moves) securely accessible and manipulable only within appropriate scopes.
+
+- **Module Pattern**: The application is structured with the Module Pattern to organize the code into self-contained modules. This allows for better maintainability, reusability, and separation of concerns.

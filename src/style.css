@@ -212,6 +212,7 @@ button:hover{
 
 #opponent-gameplay h1, #choose-mark h1{
     padding: 15px;
+    position: relative;
 }
 
 #player-turns{
@@ -267,6 +268,22 @@ margin: 0px 10px;
 
 .btn-container{
     margin-top: 10px;
+}
+
+a{
+    text-decoration: none;
+}
+
+.inline{
+    display: inline-block;
+    width: 100%;
+}
+
+#restart-game-btn{        
+    display: none;
+    margin: 10px auto;   
+    padding: 0px 15px;
+    border-radius: 5px;
 }
 /* footer */
 footer{

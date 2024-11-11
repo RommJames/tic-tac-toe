@@ -20,7 +20,7 @@
         </div>
     </div>
     <div id="header-title">        
-        <h1><i>Tic-Tac-Toe Game (2 Player)</i></h1>        
+        <h1><i>Tic-Tac-Toe Game <span id="opponent"></span></i></h1>        
         <h3><i id="rounds">Round 1</i></h3>
     </div>    
     <div id="scoreboard">
@@ -35,12 +35,12 @@
 </header>
 <main> 
     <h3 id="player-turns"></h3>
-    <!-- <div id="form-gameplay">
+    <div id="form-gameplay">
         <div id="opponent-gameplay">
-            <h1>Choose Gameplay</h1>
+            <h1>Choose Opponent</h1>
             <div class="btn-container">
                 <button id="vs-ai"> Vs computer </button>                
-                <button id="vs-2p"> 2 Player </button>
+                <button id="vs-2p"> Vs Player </button>
             </div>            
         </div>
         <div id="choose-mark" class="hide-game-control">
@@ -50,7 +50,10 @@
             <button id="choose-o"> O </button>
             </div>            
         </div>
-    </div>  -->
+    </div> 
+    <button id="restart-game-btn">
+        Restart Game
+    </button>      
 </main>
 <footer>
     <a href="https://rommjames.github.io/About-Me/" target="_blank">

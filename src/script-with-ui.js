@@ -16,6 +16,7 @@ const vsAIbtn = document.querySelector("#vs-ai");
 const vs2Pbtn = document.querySelector("#vs-2p");
 const chooseXbtn = document.querySelector("#choose-x");
 const chooseObtn = document.querySelector("#choose-o");
+const opponentHTML = document.querySelector("#opponent")
 
 // Game Over Panel
 const gameOverHTML = document.querySelector("#game-over");
@@ -23,6 +24,7 @@ const gameOverFormHTML = document.querySelector("#game-over-form");
 const gameOverMessageHTML = document.querySelector("#game-over-message");
 const playAgainBtn = document.querySelector("#play-again");
 const endGameBtn = document.querySelector("#end-game");
+const restartGameBtn = document.querySelector("#restart-game-btn");
 
 // Initialize
 const gameboard = (function(){
@@ -117,6 +119,7 @@ function checkValues(startIndex){
 
 // check symbols if gets 3 marks in a row
 let countMoves = 0;
+let stopMoveAi = false
 function checkDirectionWinner(direction, option){
     let checkSymbolX = [];
     let checkSymbolO = [];
@@ -189,6 +192,7 @@ function checkDirectionWinner(direction, option){
         isGameStart = false          
         countMoves = 0;
         gameEnds("O", "X");
+        stopMoveAi = true;
         // Update Round
         round++
         roundHTML.textContent = `Round ${round}`
@@ -201,6 +205,7 @@ function checkDirectionWinner(direction, option){
         isGameStart = false;          
         countMoves = 0;
         gameEnds("X", "O");
+        stopMoveAi = true;
         // Update Round
         round++
         roundHTML.textContent = `Round ${round}`
@@ -263,75 +268,34 @@ function retrieveGameboard(){
 
     });
         
-    playerTurnsHTML.textContent = "Choose your move, 'Player X'"
+    playerTurnsHTML.textContent = `Choose your move, 'Player ${getMove.getSymbol()}'`
     main.append(gameboardHTML);
+
 }
-retrieveGameboard();
+// retrieveGameboard();
 
-// Randomize Choice of ai
-function randomMoveAI(){
-    const chooseRow = Math.floor(Math.random() * 3);
-    const chooseCell = Math.floor(Math.random() * 3);
-    const chosenMovesAI = [];
 
-    const randomizeAgain = ()=>{
-        chooseRow = Math.floor(Math.random() * 3);
-        chooseCell = Math.floor(Math.random() * 3);
-    }
-
-    const compiledMoves = ()=>{
-        chosenMovesAI.push([chooseRow, chooseCell]);
-    }
-
-    const getCompiledMoves = ()=> chosenMovesAI;
-
-    const getChosenRow = () => chooseRow;
-    const getChosenCell = () => chooseCell;
-
-    return {getCompiledMoves,compiledMoves, getChosenCell, getChosenRow, randomizeAgain}
-}
-
-// function for AI
-// function AImoves(){    
-//     const getRandomizeMoves = randomMoveAI();
-//     getRandomizeMoves.compiledMoves();
-//     const getAImove = getRandomizeMoves.getCompiledMoves();
-//     const getPositionsToCompare = getMove.getExistingPositions()
-//     let continueAIMoves = true;
-
-//     getPositionsToCompare.forEach((pair, index)=>{
-
-//         if(JSON.stringify(pair) === JSON.stringify(getAImove)){
-//             continueAIMoves = false;
-//             console.log(`Match found at index ${index}:`, pair)
-//             console.log("AI Moves: ", getAImove)
-//         }
-//         console.log(`Check positions, index${index}:`, pair)
-//         console.log("AI Moves: ", getAImove)
-//     })
-
-//     if(continueAIMoves == true){
-//         gameboard[getRandomizeMoves.getChosenRow()][getRandomizeMoves.getChosenCell()] = getMove.getSymbol();
-//     }else{
-//         AImoves();
-//     }
-    
-// }
-
+// AI moves
 function AImoves(){
-    let aiMoveRandomize = Math.floor(Math.random() * 10);
-    let getPos
-    let checkPos = []
-    for(let row = 0; row < gameboard.length; row++){
-        getPos = gameboard[row].indexOf(aiMoveRandomize);
-        console.log("getPos:",getPos);
-        console.log("aiRandomize:",aiMoveRandomize);
-        if(getPos == -1){
-            
-        }
+    let storeAvailableCell = []
+    for(let row = 0; row < gameboard.length; row++){        
+
+        gameboard[row].forEach(cell => {
+            if(Number.isInteger(cell)){
+                storeAvailableCell.push(cell);
+            }            
+        });
+
     }
-    
-    // getMove.getMoves(aiMoveRandomize);
+   
+    if(storeAvailableCell.length > 0){
+        let randomIndex = Math.floor(Math.random() * (storeAvailableCell.length - 1));
+        let chooseAImoves = storeAvailableCell[randomIndex];
+        getMove.getMoves(chooseAImoves)
+        console.log({storeAvailableCell, chooseAImoves, randomIndex})
+    }
+   
+
 }
 
 // Function when the cell is clicked
@@ -339,9 +303,12 @@ function clickCell(markData, cellData, gameboardDOM, cellItself){
 
     markData.style.animation = "pop 0.4s ease-in-out 1 forwards"
     gameboardDOM.remove();
-    getMove.getMoves(cellData);    
-    AImoves();    
-    checkWinner();
+    getMove.getMoves(cellData); 
+    checkWinner();   
+    if(stopMoveAi == false){        
+        AImoves();  
+        checkWinner();           
+    }        
     getMove.updateGameboard();
     cellItself.setAttribute("class", "cell-disable");    
 }
@@ -368,8 +335,15 @@ function gameEnds(playerSymbol, roundWinner){
         resetGameboard();
         const getGameboardHTML = document.getElementById("gameboard");
         getGameboardHTML.remove();
+        
+        if(getMove.getSymbol() != yourMarks && opponent == "ai"){
+            AImoves()
+        }        
         retrieveGameboard();
-
+        if(opponent == "ai"){
+            stopMoveAi = false;
+        }
+        
         gameOverHTML.style.transform = "scale(0)";
     })
 
@@ -393,9 +367,8 @@ function gameEnds(playerSymbol, roundWinner){
 
         isGameStart = false;
 
-
-
         gameOverHTML.style.transform = "scale(0)";
+        restartGameBtn.style.display = "block";
     })
 }
 
@@ -442,43 +415,60 @@ function makeMove(){
 
 function chooseGameplay(){
     opponentGameplayHTML.addEventListener("click", function(e){
-
+        
         const getID = e.target.id;
 
         switch(getID){
             case "vs-ai":
                 opponent = "ai";
+                if(opponent == "ai"){
+                    opponentGameplayHTML.setAttribute("class", "hide-game-control");
+                    chooseMarkHTML.setAttribute("class", "show-game-control");
+                    
+                    chooseMarkHTML.addEventListener("click", function(e){
+                        const getID = e.target.id;
+        
+                        switch(getID){
+                            case "choose-x":
+                                yourMarks = "X";
+                                break;
+                            case "choose-o":
+                                yourMarks = "O";
+                                AImoves()
+                                break;
+                        }        
+        
+                        // chooseMarkHTML.setAttribute("class", "hide-game-control");
+                        formGameplayHTML.style.display = "none";
+                        console.log("You choose: ", yourMarks);
+                        retrieveGameboard()
+                    }) 
+                }
                 break;
             case "vs-2p":
+                stopMoveAi = true;
                 opponent = "2p";
+                if(opponent == "2p"){
+                    opponentHTML.textContent = `(2 Player)`
+                }else{
+                    opponentHTML.textContent = `(vs AI)`
+                }
+                formGameplayHTML.style.display = "none";  
+                retrieveGameboard()     
+                break;
+            default:
                 break;
         }        
-        opponentGameplayHTML.setAttribute("class", "hide-game-control");
-        
-        chooseMarkHTML.setAttribute("class", "show-game-control");
-
-        console.log("Opponent: ", opponent)
     })   
 
-    chooseMarkHTML.addEventListener("click", function(e){
-        const getID = e.target.id;
-
-        switch(getID){
-            case "choose-x":
-                yourMarks = "X";
-                break;
-            case "choose-o":
-                yourMarks = "O";
-                break;
-        }        
-
-        // chooseMarkHTML.setAttribute("class", "hide-game-control");
-        formGameplayHTML.style.display = "none";
-        console.log("You choose: ", yourMarks);
-    }) 
 
 }
-// chooseGameplay()
+chooseGameplay()
+
+// Restart Game
+restartGameBtn.addEventListener("click", function(){    
+    location.reload();
+})
 
 {/* <div id="gameboard">
         <div class="row">

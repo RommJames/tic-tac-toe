@@ -263,16 +263,85 @@ function retrieveGameboard(){
 
     });
         
-
+    playerTurnsHTML.textContent = "Choose your move, 'Player X'"
     main.append(gameboardHTML);
 }
 retrieveGameboard();
 
+// Randomize Choice of ai
+function randomMoveAI(){
+    const chooseRow = Math.floor(Math.random() * 3);
+    const chooseCell = Math.floor(Math.random() * 3);
+    const chosenMovesAI = [];
+
+    const randomizeAgain = ()=>{
+        chooseRow = Math.floor(Math.random() * 3);
+        chooseCell = Math.floor(Math.random() * 3);
+    }
+
+    const compiledMoves = ()=>{
+        chosenMovesAI.push([chooseRow, chooseCell]);
+    }
+
+    const getCompiledMoves = ()=> chosenMovesAI;
+
+    const getChosenRow = () => chooseRow;
+    const getChosenCell = () => chooseCell;
+
+    return {getCompiledMoves,compiledMoves, getChosenCell, getChosenRow, randomizeAgain}
+}
+
+// function for AI
+// function AImoves(){    
+//     const getRandomizeMoves = randomMoveAI();
+//     getRandomizeMoves.compiledMoves();
+//     const getAImove = getRandomizeMoves.getCompiledMoves();
+//     const getPositionsToCompare = getMove.getExistingPositions()
+//     let continueAIMoves = true;
+
+//     getPositionsToCompare.forEach((pair, index)=>{
+
+//         if(JSON.stringify(pair) === JSON.stringify(getAImove)){
+//             continueAIMoves = false;
+//             console.log(`Match found at index ${index}:`, pair)
+//             console.log("AI Moves: ", getAImove)
+//         }
+//         console.log(`Check positions, index${index}:`, pair)
+//         console.log("AI Moves: ", getAImove)
+//     })
+
+//     if(continueAIMoves == true){
+//         gameboard[getRandomizeMoves.getChosenRow()][getRandomizeMoves.getChosenCell()] = getMove.getSymbol();
+//     }else{
+//         AImoves();
+//     }
+    
+// }
+
+function AImoves(){
+    let aiMoveRandomize = Math.floor(Math.random() * 10);
+    let getPos
+    let checkPos = []
+    for(let row = 0; row < gameboard.length; row++){
+        getPos = gameboard[row].indexOf(aiMoveRandomize);
+        console.log("getPos:",getPos);
+        console.log("aiRandomize:",aiMoveRandomize);
+        if(getPos == -1){
+            
+        }
+    }
+    
+    // getMove.getMoves(aiMoveRandomize);
+}
+
 // Function when the cell is clicked
 function clickCell(markData, cellData, gameboardDOM, cellItself){
+
     markData.style.animation = "pop 0.4s ease-in-out 1 forwards"
     gameboardDOM.remove();
-    getMove.getMoves(cellData)
+    getMove.getMoves(cellData);    
+    AImoves();    
+    checkWinner();
     getMove.updateGameboard();
     cellItself.setAttribute("class", "cell-disable");    
 }
@@ -347,20 +416,26 @@ function findPosition(cell){
 // Make Moves, put the marks or symbols into the cell
 function makeMove(){
     let symbol = "X";
+    let existingPositions = []
     // let cell 
     function getMoves(cell){
         const position = findPosition(+cell);
-        gameboard[position.row][position.getPos] = symbol
+        let getRow = position.row
+        let getCell = position.getPos
+        gameboard[getRow][getCell] = symbol
         symbol = symbol === "X" ? "O" : "X";  
         playerTurnsHTML.textContent = `Your turns, 'Player ${symbol}'`
-        checkWinner();
+        existingPositions.push([getRow, getCell])
+        // checkWinner();
     }
 
     const getSymbol = ()=> symbol;
 
+    const getExistingPositions = ()=> existingPositions;
+
     const updateGameboard = ()=> retrieveGameboard();
 
-    return {getMoves, updateGameboard, getSymbol}
+    return {getMoves, updateGameboard, getSymbol, getExistingPositions}
 }
 
 // Choose Symbols and opponent
@@ -445,3 +520,4 @@ function chooseGameplay(){
         </div>            
     </div>
 </div>     */}
+

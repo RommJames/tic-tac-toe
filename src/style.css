@@ -243,6 +243,9 @@ button:hover{
     justify-content: center;
     align-items: center;
     transform: scale(0);
+    padding: 10px;
+    z-index: 100;
+    min-width: 360px;
 }
 
 #game-over-form{
@@ -251,6 +254,11 @@ button:hover{
     background-color: white;
     text-align: center;
     border-radius: 10px;
+    padding-top: 10px;
+}
+
+#game-over h1, #game-over h3{
+margin: 0px 10px;
 }
 
 .bg-close-color{
